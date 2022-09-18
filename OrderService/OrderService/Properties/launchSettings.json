@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OrderService": {
+      "commandName": "Project",
+      "commandLineArgs": "port=44001"
+    }
+  }
+}
