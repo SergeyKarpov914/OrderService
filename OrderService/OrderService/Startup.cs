@@ -5,11 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OrderService.Interface;
+using OrderService.Processor;
 using System;
 
 namespace OrderService
 {
-	internal class Startup
+	public class Startup
 	{
 		public Startup(IConfiguration configuration)
 		{
@@ -24,7 +25,7 @@ namespace OrderService
 			{
 				services.AddAuthentication(IISDefaults.AuthenticationScheme);
 				services.AddControllers();
-				services.AddTransient<IServiceProcessor>(provider => (provider.GetService(typeof(IServiceProcessor)) as IServiceProcessor)?.Initialize(Configuration));
+				services.AddTransient<IServiceProcessor, OrderProcessor>();
 			}
 			catch (Exception ex)
 			{

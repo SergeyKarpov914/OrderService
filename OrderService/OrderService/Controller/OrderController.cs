@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace OrderService.Controller
 {
-	internal class OrderController : ControllerBase
+	[ApiController]
+	public class OrderController : ControllerBase
 	{
 		private readonly IServiceProcessor _processor;
 

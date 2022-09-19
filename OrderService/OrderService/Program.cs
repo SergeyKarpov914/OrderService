@@ -8,13 +8,13 @@ using System.Net;
 
 namespace OrderService
 {
-	internal class Program
+	public class Program
 	{
+		private static IWebHost host;
+		private static IConfigurationRoot config;
+
 		static void Main(string[] args)
 		{
-			IWebHost host;
-			IConfigurationRoot config;
-		
 			try
 			{
 				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

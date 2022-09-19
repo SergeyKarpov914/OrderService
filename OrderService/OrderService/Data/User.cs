@@ -3,7 +3,7 @@ using System.Data;
 
 namespace OrderService.Data
 {
-	internal class User : ISettable
+	public class User : ISettable
 	{
 		public int    EmployeeID { get; set; }
 		public string LastName   { get; set; }

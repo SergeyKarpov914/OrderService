@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 
 namespace OrderService.Interface
 {
-	internal interface IServiceProcessor
+	public interface IServiceProcessor
 	{
-		IServiceProcessor Initialize(IConfiguration configuration);
-
 		Task<IEnumerable<T>> GetAll<T>(string key = null) where T : class, ISettable, new();
 
 		Task<T> Get<T>(string key) where T : class;

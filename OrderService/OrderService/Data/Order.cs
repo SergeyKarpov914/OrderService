@@ -5,7 +5,7 @@ using System.Net;
 
 namespace OrderService.Data
 {
-	internal class Order : ISettable
+	public class Order : ISettable
 	{
 		public int      OrderID        { get; set; }
 		public int      EmployeeID     { get; set; }

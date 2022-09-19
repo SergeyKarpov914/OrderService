@@ -8,17 +8,16 @@ using System.Threading.Tasks;
 
 namespace OrderService.Processor
 {
-	internal class OrderProcessor : IServiceProcessor
+	public class OrderProcessor : IServiceProcessor
 	{
 		private IConfiguration _configuration;
 
-		#region IServiceProcessor
-
-		public IServiceProcessor Initialize(IConfiguration configuration)
+		public OrderProcessor(IConfiguration configuration)
 		{
 			_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-			return this;
 		}
+
+		#region IServiceProcessor
 
 		public async Task<IEnumerable<T>> GetAll<T>(string key = null) where T : class, ISettable, new()
 		{

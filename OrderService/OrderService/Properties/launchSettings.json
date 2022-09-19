@@ -2,7 +2,22 @@
   "profiles": {
     "OrderService": {
       "commandName": "Project",
-      "commandLineArgs": "port=44001"
+      "commandLineArgs": "port=4210",
+      "launchUrl": "api/users",
+      "applicationUrl": "http://localhost:5000"
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/OrderService",
+      "sslPort": 0
+    },
+    "iisExpress": {
+      "applicationUrl": "http://localhost:62450",
+      "sslPort": 0
     }
   }
 }

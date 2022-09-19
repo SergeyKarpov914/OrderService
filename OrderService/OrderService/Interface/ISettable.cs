@@ -2,7 +2,7 @@
 
 namespace OrderService.Interface
 {
-	internal interface ISettable
+	public interface ISettable
 	{
 		ISettable SetFrom(DataRow row); 
 	}
