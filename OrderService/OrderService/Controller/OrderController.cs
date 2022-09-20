@@ -18,7 +18,7 @@ namespace OrderService.Controller
 			_processor = processor ?? throw new ArgumentNullException(nameof(processor));
 		}
 
-		[Route("api/orders")]
+		[Route("api/orders/{key}")]
 		[HttpGet]
 		public async Task<IActionResult> GetOrders(string key)
 		{
@@ -36,7 +36,7 @@ namespace OrderService.Controller
 
 		[Route("api/users")]
 		[HttpGet]
-		public async Task<IActionResult> GetUsers(string key)
+		public async Task<IActionResult> GetUsers()
 		{
 			IEnumerable<User> users = null;
 			try

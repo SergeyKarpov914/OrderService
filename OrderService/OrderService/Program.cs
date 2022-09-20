@@ -10,8 +10,8 @@ namespace OrderService
 {
 	public class Program
 	{
-		private static IWebHost host;
-		private static IConfigurationRoot config;
+		private static IWebHost _host;
+		private static IConfigurationRoot _config;
 
 		static void Main(string[] args)
 		{
@@ -19,13 +19,13 @@ namespace OrderService
 			{
 				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-				config = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true)
-						                            .AddCommandLine(args)  							
+				_config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional:false, reloadOnChange:true)
+	    				                            .AddCommandLine(args)  							
 					                                .Build();
 
-				int port = findPort(config); // command line convention is: key=value , where key is clean string with no '-'
+				int port = findPort(_config); // command line convention is: key=value , where key is clean string with no '-'
 
-				host = new WebHostBuilder().UseConfiguration(config)
+				_host = new WebHostBuilder().UseConfiguration(_config)
 											.ConfigureAppConfiguration(builder =>
 											{
 												builder.AddCommandLine(args);
@@ -42,7 +42,7 @@ namespace OrderService
 
 				Console.WriteLine($"Server hosting with Kestrel: {Dns.GetHostEntry(Dns.GetHostName()).HostName}:{port}");
 				
-				host.Run();
+				_host.Run();
 			}
 			catch //(Exception ex)
 			{

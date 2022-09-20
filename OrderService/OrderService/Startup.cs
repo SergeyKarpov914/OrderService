@@ -17,7 +17,7 @@ namespace OrderService
 			Configuration = configuration;
 		}
 
-		public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; private set; }
 
 		public void ConfigureServices(IServiceCollection services)
 		{

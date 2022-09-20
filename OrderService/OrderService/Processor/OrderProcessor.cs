@@ -4,17 +4,31 @@ using OrderService.Interface;
 using OrderService.Service;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrderService.Processor
 {
 	public class OrderProcessor : IServiceProcessor
 	{
-		private IConfiguration _configuration;
+		private static IConfiguration configuration;
 
-		public OrderProcessor(IConfiguration configuration)
+		private static string connectionString;
+		private static string userQuery;
+		private static string orderQuery;
+
+		public OrderProcessor(IConfiguration config)
 		{
-			_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+			configuration = config ?? throw new ArgumentNullException(nameof(configuration));
+
+			if (string.IsNullOrEmpty(connectionString))
+			{
+				Console.WriteLine($"Set statics [{Thread.CurrentThread.ManagedThreadId}]");
+				
+				connectionString = configuration.GetConnectionString("Sql");
+				userQuery        = configuration.GetValue<string>("Users");
+				orderQuery       = configuration.GetValue<string>("Orders");
+			}
 		}
 
 		#region IServiceProcessor
@@ -23,7 +37,9 @@ namespace OrderService.Processor
 		{
 			string query = findQuery<T>(key);
 
-			IEnumerable<T> resultSet = await new SQLService(_configuration).GetAll<T>(query);
+			Console.WriteLine($"GetAll [{Thread.CurrentThread.ManagedThreadId}] '{key}' '{query}'");
+
+			IEnumerable<T> resultSet = await new SQLService().GetAll<T>(query, connectionString);
 
 			return resultSet;
 		}
@@ -49,17 +65,15 @@ namespace OrderService.Processor
 
 		private string findQuery<T>(string key = null)
 		{
-			string queryKey = null;
-
 			if (typeof(T) == typeof(User))
 			{
-				queryKey = "Users";
+				return userQuery;
 			}
 			if (typeof(T) == typeof(Order))
 			{
-				queryKey = "Orders"; // key is int, dont modify with quotes
+				return orderQuery + key;
 			}
-			return _configuration.GetValue<string>(queryKey) + key ?? String.Empty;
+			throw new Exception($"{typeof(T).Name} is unsupported type");
 		}
 
 		#endregion helper(s)
