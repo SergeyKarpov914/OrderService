@@ -1,7 +1,6 @@
 ﻿using OrderService.Interface;
 using System;
 using System.Data;
-using System.Net;
 
 namespace OrderService.Data
 {

@@ -35,6 +35,54 @@ namespace OrderService.Controller
 			return this.Success(orders, nameof(GetOrders));
 		}
 
+		[Route("api/orders")]
+		[HttpGet]
+		public async Task<IActionResult> GetAllOrders()
+		{
+			IEnumerable<Order> orders = null;
+			try
+			{
+				orders = await _processor.GetAll<Order>() ?? throw new Exception($"NULL {typeof(Order).Name} collection returned by processor");
+			}
+			catch (Exception ex)
+			{
+				return this.Failed(nameof(GetAllOrders), ex.Message);
+			}
+			return this.Success(orders, nameof(GetAllOrders));
+		}
+
+		[Route("api/products/{key}")]
+		[HttpGet]
+		public async Task<IActionResult> GetProducts(string key)
+		{
+			IEnumerable<Product> products = null;
+			try
+			{
+				products = await _processor.GetAll<Product>(key) ?? throw new Exception($"NULL {typeof(Product).Name} collection returned by processor");
+			}
+			catch (Exception ex)
+			{
+				return this.Failed(nameof(GetProducts), ex.Message);
+			}
+			return this.Success(products, nameof(GetProducts));
+		}
+
+		[Route("api/territories/{key}")]
+		[HttpGet]
+		public async Task<IActionResult> GetTerritories(string key)
+		{
+			IEnumerable<Territory> territories = null;
+			try
+			{
+				territories = await _processor.GetAll<Territory>(key) ?? throw new Exception($"NULL {typeof(Territory).Name} collection returned by processor");
+			}
+			catch (Exception ex)
+			{
+				return this.Failed(nameof(GetTerritories), ex.Message);
+			}
+			return this.Success(territories, nameof(GetTerritories));
+		}
+
 		[Route("api/users")]
 		[HttpGet]
 		public async Task<IActionResult> GetUsers()
@@ -46,9 +94,9 @@ namespace OrderService.Controller
 			}
 			catch (Exception ex)
 			{
-				return this.Failed(nameof(GetOrders), ex.Message);
+				return this.Failed(nameof(GetUsers), ex.Message);
 			}
-			return this.Success(users, nameof(GetOrders));
+			return this.Success(users, nameof(GetUsers));
 		}
 	}
 }

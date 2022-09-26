@@ -14,8 +14,13 @@ namespace OrderService.Processor
 		private static IConfiguration configuration;
 
 		private static string connectionString;
+
 		private static string userQuery;
 		private static string orderQuery;
+		private static string productQuery;
+		private static string territoryQuery;
+		private static string userKey;
+		private static string orderKey;
 
 		public OrderProcessor(IConfiguration config)
 		{
@@ -26,8 +31,13 @@ namespace OrderService.Processor
 				Console.WriteLine($"Set statics [{Thread.CurrentThread.ManagedThreadId}]");
 				
 				connectionString = configuration.GetConnectionString("Sql");
-				userQuery        = configuration.GetValue<string>("Users");
-				orderQuery       = configuration.GetValue<string>("Orders");
+
+				userQuery      = configuration.GetValue<string>("Users");
+				orderQuery     = configuration.GetValue<string>("Orders");
+				productQuery   = configuration.GetValue<string>("Products");
+				territoryQuery = configuration.GetValue<string>("Territories");
+				orderKey       = configuration.GetValue<string>("OrderKey");
+				userKey        = configuration.GetValue<string>("UserKey");
 			}
 		}
 
@@ -36,11 +46,9 @@ namespace OrderService.Processor
 		public async Task<IEnumerable<T>> GetAll<T>(string key = null) where T : class, ISettable, new()
 		{
 			string query = findQuery<T>(key);
-
 			Console.WriteLine($"GetAll [{Thread.CurrentThread.ManagedThreadId}] '{key}' '{query}'");
 
 			IEnumerable<T> resultSet = await new SQLService().GetAll<T>(query, connectionString);
-
 			return resultSet;
 		}
 
@@ -71,9 +79,26 @@ namespace OrderService.Processor
 			}
 			if (typeof(T) == typeof(Order))
 			{
-				return orderQuery + key;
+				return orderQuery + clause(userKey, key);
+			}
+			if (typeof(T) == typeof(Product))
+			{
+				return productQuery + clause(orderKey, key); 
+			}
+			if (typeof(T) == typeof(Territory))
+			{
+				return territoryQuery + clause(userKey, key); 
 			}
 			throw new Exception($"{typeof(T).Name} is unsupported type");
+		}
+
+		private string clause(string key, string value)
+		{
+			if (null != value)
+			{
+				return $" WHERE {key}={value}";
+			}
+			return string.Empty;
 		}
 
 		#endregion helper(s)
